@@ -1,4 +1,5 @@
 from git import Repo, GitCommandError
+import subprocess
 
 def check_latest_commit(repo_path):
     repo = Repo(repo_path)
@@ -10,6 +11,13 @@ def check_latest_commit(repo_path):
     # Get the latest commit
     latest_commit = repo.head.commit
     return latest_commit
+def deploy_and_restart():
+    # Replace this command with the actual command to deploy and restart your application
+    deployment_command = "echo 'Deploying and restarting application...'"
+
+
+    # Run the deployment command
+    subprocess.run(['sh', '/deploy.sh'], shell=True)
 
 def devmain():
     repo_url = 'https://github.com/surendergupta/cicdpipeline'
@@ -25,12 +33,19 @@ def devmain():
             # Handle the error, perhaps the repository does not exist or there's an issue with the URL
 
     # Now you can work with the repo object
-    latest_commit = check_latest_commit(repo_path)
-    print(f"Latest Commit SHA: {latest_commit.hexsha}")
-    
+    # latest_commit = check_latest_commit(repo_path)
+    # print(f"Latest Commit SHA: {latest_commit.hexsha}")
+
     prev_commits = list(repo.iter_commits(all=True, max_count=10))
-    latestcommit = prev_commits[0]
-    return latestcommit
+    latest_commit = prev_commits[0]
+    
+    # Check if the latest commit is different from the currently deployed commit
+    # You may need to modify this condition based on your deployment strategy
+    if latest_commit != repo.head.commit:
+        deploy_and_restart()
+        print("Deployment and restart completed.")
+    else:
+        print("No new commits. No deployment needed.")
 
 if __name__ == "__main__":
     devmain()
