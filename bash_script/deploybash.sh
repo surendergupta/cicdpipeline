@@ -1,5 +1,5 @@
 #!/bin/bash
-python3  /home/ubuntu/cicdpipeline/bash_script/gitcheckrepo.py
+python3  /home/ubuntu/cicdpipeline/bash_script/latest_commit.py
 echo "running python script.."
 sleep 10
 #CD to HTML folder
@@ -7,10 +7,10 @@ cd /var/www/html/cicdpipeline/
 echo now pwd is `pwd`
 sleep 10
 #get commit ids present in Current Webserver
-sudo git log --pretty=format:"%H" | grep -v '^$' | head -1 > /home/ubuntu/cicdpipeline/Current_Webserver_Commits.txt
-value_Webserver=$(cat "/home/ubuntu/cicdpipeline/Current_Webserver_Commits.txt")
+sudo git log --pretty=format:"%H" | grep -v '^$' | head -1 > /home/ubuntu/cicdpipeline/bash_script/current_webserver_commits.txt
+value_Webserver=$(cat "/home/ubuntu/cicdpipeline/bash_script/current_webserver_commits.txt")
 echo "Fetching commits from Webserver = $value_Webserver"
-value_Github=$(cat "/home/ubuntu/cicdpipeline/bash_script/Current_GitHub_Commits.txt" | grep -v '^$')
+value_Github=$(cat "/home/ubuntu/cicdpipeline/bash_script/current_github_commits.txt" | grep -v '^$')
 echo "Fetching commits from GitHub = $value_Github"
 echo "Evaluating both the commits"
 if [ "$value_Webserver" = "$value_Github" ];
